@@ -119,7 +119,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(latLng).title(locationName));
 
                 database.saveLocation(locationName, latLng);
-//              Log.i("Information about point", et.getText().toString() + " lang: " + String.valueOf(latLng.latitude) + " long: " + String.valueOf(latLng.longitude));
+                Log.i("Information about point", et.getText().toString() + " lang: " + String.valueOf(latLng.latitude) + " long: " + String.valueOf(latLng.longitude));
+
                 dialog.dismiss();
             }
         });
@@ -168,6 +169,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         Log.v("LOCATION", String.valueOf(location.getLatitude()) + " " + String.valueOf(location.getLongitude()));
+        LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+        OnMapClick(l);
     }
 
     @Override

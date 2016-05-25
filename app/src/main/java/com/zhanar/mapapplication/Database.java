@@ -18,17 +18,17 @@ import java.util.List;
 public class Database {
 
     private static final String DB_NAME = "Database";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private static final String TABLE_MAP = "Map";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "title";
+    public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_LATITUDE = "Latitude";
     public static final String COLUMN_LONGITUDE = "Longitude";
 
     public static final String MAP_TABLE_CREATE = " create table if not exists " + TABLE_MAP
             + " ( " + COLUMN_ID + " integer primary key autoincrement , "
-            + COLUMN_NAME + " text null , "
+            + COLUMN_TITLE + " text null , "
             + COLUMN_LATITUDE + " float null , "
             + COLUMN_LONGITUDE + " float null );";
 
@@ -57,26 +57,23 @@ public class Database {
     public void saveLocation(String locationName, LatLng latLng){
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("Name", locationName);
-        contentValues.put("Latitude", latLng.latitude);
-        contentValues.put("Longitude", latLng.longitude);
+        contentValues.put(COLUMN_TITLE, locationName);
+        contentValues.put(COLUMN_LATITUDE, latLng.latitude);
+        contentValues.put(COLUMN_LONGITUDE, latLng.longitude);
 
         mDB.insertWithOnConflict(TABLE_MAP, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-//        long rowID = mDB.insert(TABLE_MAP, null, contentValues);
-//        Log.e("insert", "row inserted, ID = " + rowID);
     }
 
     public List<Map> getLocations() {
         List<Map> list = new ArrayList<Map>();
 
-//        Cursor c = mDB.query("PointItem", null, null, null, null, null, null);
         Cursor cursor = mDB.rawQuery("SELECT * FROM " + TABLE_MAP, null);
 
         if (cursor.moveToFirst()) {
-            int idColIndex = cursor.getColumnIndex("Id");
-            int nameColIndex = cursor.getColumnIndex("Name");
-            int ltColIndex = cursor.getColumnIndex("Latitude");
-            int lgColIndex = cursor.getColumnIndex("Longitude");
+            int idColIndex = cursor.getColumnIndex(COLUMN_ID);
+            int nameColIndex = cursor.getColumnIndex(COLUMN_TITLE);
+            int ltColIndex = cursor.getColumnIndex(COLUMN_LATITUDE);
+            int lgColIndex = cursor.getColumnIndex(COLUMN_LONGITUDE);
 
             do {
                 Map map = new Map();
@@ -88,11 +85,10 @@ public class Database {
                 list.add(map);
             }
             while (cursor.moveToNext());
-        } else
-            Log.e("r", "0 rows");
+        } else {
+            Log.e("ERROR", "0 rows");
+        }
         cursor.close();
-
-        Log.e("r", list.size() + " rows");
 
         return list;
     }
