@@ -18,7 +18,7 @@ import java.util.List;
 public class Database {
 
     private static final String DB_NAME = "Database";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     private static final String TABLE_MAP = "Map";
     public static final String COLUMN_ID = "_id";

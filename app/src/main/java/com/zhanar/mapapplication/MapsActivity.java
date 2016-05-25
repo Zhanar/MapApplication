@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onStop();
     }
 
-    public void drawAllItemsToMap(List<Map> allItemsToMap) {
+    public void showLocations(List<Map> allItemsToMap) {
         for (Map m : allItemsToMap) {
             LatLng coords = new LatLng(m.getLatitude(), m.getLongitude());
             mMap.addMarker(new MarkerOptions().position(coords).title(m.getName()));
@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         List<Map> points = database.getLocations();
-        drawAllItemsToMap(points);
+        showLocations(points);
         setupMyLocation();
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
@@ -107,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void OnMapClick(final LatLng latLng) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-        builder.setTitle("Please enter a name of location:");
+        builder.setTitle("Please enter the title of location:");
         final LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(builder.getContext()).inflate(R.layout.location, null);
         builder.setView(linearLayout);
 
